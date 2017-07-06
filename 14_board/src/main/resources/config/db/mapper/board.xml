@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heartof.board.db.mapper.BoardMapper">
+	<select id="islogin" parameterType="TB_UserVO" resultType="int">
+		SELECT count(*) as count FROM TB_USER
+		WHERE
+			id = #{id} AND
+			pass = #{pass}
+	</select>
+
+	<select id="selectList" parameterType="PageVO" resultType="TB_BoardVO">
+		SELECT 
+			* 
+		FROM TB_BOARD
+		LIMIT #{limit} OFFSET #{start}
+	</select>
+	
+	<select id="selectTotalRecommend" resultType="int">
+		SELECT COUNT(*) AS COUNT FROM TB_RECOMMEND 
+		WHERE
+			no = #{no} 	
+	</select>
+	
+	<insert id="insertBoard" parameterType="TB_BoardVO">
+		<selectKey resultType="int" keyProperty="no" order="AFTER">
+	        SELECT LAST_INSERT_ID()
+	    </selectKey> 
+		INSERT INTO TB_BOARD
+			(TITLE, WRITER, CONTENT, REG_DATE)
+		VALUES
+			(#{title}, #{writer}, #{content}, NOW())
+	</insert>
+	
+	<update id="updateBoard" parameterType="TB_BoardVO">
+		UPDATE TB_BOARD
+		SET
+			title = #{title},
+			content = #{content}
+		WHERE 
+			no = #{no}	
+	</update>
+	
+	<delete id="deleteBoard" parameterType="TB_BoardVO">
+		DELETE FROM TB_BOARD
+		WHERE 
+			no = #{no} and
+			writer = #{writer}
+	</delete>
+	
+	<insert id="insertRecommend" parameterType="TB_BoardRecommendVO">
+		INSERT INTO TB_RECOMMEND
+		(no, id) VALUE (#{no}, #{id}) 
+	</insert>
+	
+	<delete id="deleteRecommend" parameterType="TB_BoardRecommendVO">
+		DELETE FROM TB_RECOMMEND
+		WHERE
+			id = #{id} AND
+			no = #{no}		 
+	</delete>
+	
+	<select id="selectComment" parameterType="int" resultType="TB_BoardCommentVO">
+		SELECT 
+			* 
+		FROM TB_BOARD_COMMENT
+		WHERE
+			no = #{no}
+	</select>
+	
+	<delete id="deleteAllComment" parameterType="int" >
+		DELETE FROM 
+		TB_BOARD_COMMENT
+		WHERE
+			no = #{no}
+	</delete>
+	
+	<delete id="deleteComment" parameterType="TB_BoardCommentVO" >
+		DELETE FROM 
+		TB_BOARD_COMMENT
+		WHERE
+			no = #{no} and 
+			comment_no = #{comment_no} and
+			user_id = #{user_id}
+	</delete>
+	
+	<insert id="insertComment" parameterType="TB_BoardCommentVO">
+		INSERT INTO TB_BOARD_COMMENT
+			(no, content, user_id, reg_date) 
+		VALUE 
+			(#{no}, #{content}, #{user_id}, now()) 
+	</insert>
+	
+	<update id="updateComment" parameterType="TB_BoardCommentVO">
+		UPDATE TB_BOARD_COMMENT
+		SET			
+			content = #{content}
+		WHERE 
+			no = #{no} and 
+			comment_no = #{comment_no} and
+			user_id = #{user_id}
+	</update>
+	
+	<select id="selectFile" parameterType="int" resultType="TB_BoardFileVO">
+		SELECT 
+			* 
+		FROM TB_BOARD_FILE
+		WHERE
+			no = #{no}
+	</select>
+	
+	<insert id="insertFile" parameterType="TB_BoardFileVO">
+		INSERT INTO TB_BOARD_FILE
+			(no, ori_name, system_name, file_path, file_size) 
+		VALUE 
+			(#{no}, #{ori_name}, #{system_name}, #{file_path}, #{file_size}) 
+	</insert>
+	
+	<delete id="deleteAllFile" parameterType="int">
+		DELETE FROM 
+			TB_BOARD_FILE
+		WHERE
+			no = #{no}
+	</delete>
+</mapper>	
