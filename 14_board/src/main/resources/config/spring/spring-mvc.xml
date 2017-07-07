@@ -37,6 +37,9 @@
     
     <mvc:default-servlet-handler/>
     
+    <mvc:view-controller path="/member/loginForm.do" view-name="/member/loginForm"/>
+    <mvc:view-controller path="/board/board.do" view-name="/board/board"/>
+    
     <mvc:interceptors>
     	<mvc:interceptor>
     		<mvc:mapping path="/board/**"/>

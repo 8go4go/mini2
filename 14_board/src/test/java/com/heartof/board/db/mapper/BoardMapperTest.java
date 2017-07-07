@@ -36,7 +36,7 @@ public class BoardMapperTest {
 	public static void main(String[] args) {
 		SqlSession session = BoardMapperTest.getSqlSessionInstance();
 		BoardMapper mapper = session.getMapper(BoardMapper.class);
-		selectTotalRecommend(mapper);
+		insertBoard(mapper);
 		session.commit();
 	}
 	

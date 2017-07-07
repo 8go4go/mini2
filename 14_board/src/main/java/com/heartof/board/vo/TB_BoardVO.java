@@ -1,5 +1,6 @@
 package com.heartof.board.vo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TB_BoardVO {
@@ -41,8 +42,9 @@ public class TB_BoardVO {
 		this.content = content;
 	}
 
-	public Date getReg_date() {
-		return reg_date;
+	public String getReg_date() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+		return format.format(reg_date);
 	}
 
 	public void setReg_date(Date reg_date) {

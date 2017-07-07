@@ -10,9 +10,11 @@ import com.heartof.board.vo.TB_BoardVO;
 import com.heartof.board.vo.TB_UserVO;
 
 public interface BoardMapper {
-	public int islogin(TB_UserVO vo);
+	public TB_UserVO islogin(TB_UserVO vo);
 	
 	public List<TB_BoardVO> selectList(PageVO vo);
+	
+	public TB_BoardVO selectDetail(int no);
 	
 	public int selectTotalRecommend(int no);
 	

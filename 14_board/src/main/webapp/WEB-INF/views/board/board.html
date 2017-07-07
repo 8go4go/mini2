@@ -45,22 +45,16 @@
 <body>
 	<div class="container">
 		<div class="wrapper">
-			<div class="inputField">
-				<input type="text" name="id" id="id">
-				<label for="id">ID</label>
-			</div>
-			<div class="inputField">
-				<input type="password" name="pass" id="pass">
-				<label for="pass">PASS</label>
-			</div>
-			<div class="loginBtn">
-				<button>로그인</button>
-			</div>
+		<script id="template" type="x-tmpl-mustache">
+			{{board}}
+			{{detail}}
+		</script>
 		</div>
 		<div class="result"></div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="/14_board/jsfk/waitme/waitMe.js"></script>
-	<script src="/14_board/js/login.js"></script>
+	<script src="/14_board/jsfk/mustache/mustache.min.js"></script>
+	<script src="/14_board/js/board.js"></script>	
 </body>
 </html>
