@@ -3,58 +3,170 @@
 <head>
 <meta charset="UTF-8">
 <title>Board</title>
-<style type="text/css">
-	.container {
-		width:1000px;
-		height:700px;
-	}
-	
-	.wrapper {
-		width : 100%;
-		background-color="gray";
-		display:flex;
-	}
-	
-	.inputField {
-		flex-direction: row;
-		align-items: center;
-		margin : 5px;
-	}
-	
-	.inputField input{
-		bacground: blue;
-		border : 1px solid blue;
-		border-radius : 5px;
-	}
-	
-	.inputField button{
-		background-color : red;
-		border : 1px solid blue;
-		border-radius : 5px;
-		box-shadow: 10px 10px 5px #888888;
-	}
-	
-	.result {
-		width : 100%;
-		background-color="gray";
-		display:flex;
-	}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
 <link rel="stylesheet" href="/14_board/jsfk/waitme/waitMe.css">
+<link rel="stylesheet" href="/14_board/jsfk/animate/animate.min.css">
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">	
 </head>
 <body>
 	<div class="container">
-		<div class="wrapper">
-		<script id="template" type="x-tmpl-mustache">
-			{{board}}
-			{{detail}}
-		</script>
+		<div class="row">
+			<div class="col l12 s12 valign-wrapper ">
+				<h2>게시판</h2>
+			</div>
 		</div>
-		<div class="result"></div>
+		<div id="boardWrite" class="modal modal-fixed-footer boardWrite">
+			<div class="row modal-content">
+				<form class="col s12" enctype="multipart/form-data">
+					<div class="row">
+						<div class="input-field col s12">
+							<input placeholder="제목을 입력하세요" id="wTitle" type="text"
+								class="validate"> <label for="wTitle">제목</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s12">
+							<textarea id="wContent" class="materialize-textarea" placeholder="내용을 입력하세요" class="validate"></textarea>
+							<label for="wContent">내용</label>
+						</div>
+					</div>
+					<div class="btn">
+						<span>File</span> <input id="wFile" type="file" multiple>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+		      <a href="#!" id="boardInsert" class="waves-effect waves-green btn-flat">완료</a>
+		    </div>
+		</div>
+		
+		<div class="boarddetail">
+			<script id="detailtemplate" type="x-tmpl-mustache">
+			<div class="row">
+				<form class="col s12 yellow lighten-5">
+					<div class="row">
+						<div class="input-field col s12">
+							<h4>글상세보기</h4>						
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s4">
+						</div>
+						<div class="input-field col s4">
+						</div>
+						<div class="input-field col s4">
+							파일 다운로드 : 
+							{{#files}}
+							<a id="uploadFile" href="/14_board/board/download.do?sName={{system_name}}&oName={{ori_name}}">{{ori_name}}</a>
+							{{/files}}
+						</div>
+					</div>
+					<div class="row">
+						<hr/>
+					</div>
+					<div class="row">
+						<div class="input-field col s6">
+							<input id="dTitle" name="title" type="text"
+								class="validate" value="{{board.title}}" ><label for="title" class="active">제목</label>
+						</div>
+						<div class="input-field col s2">
+							<input id="dNO" name="no" type="text"
+								value="{{board.no}}" readonly="readonly"><label for="no" class="active" readonly>글번호</label>
+						</div>
+						<div class="input-field col s2">
+							<input id="dRecommend" name="recommend" type="text"
+								value="{{recommend}}" readonly="readonly"><label for="recommend" class="active">추천수</label>
+						</div>
+						<div class="input-field col s2">
+							<input id="dWriter" name="writer" type="text"
+								value="{{board.writer}}" readonly="readonly"><label for="writer" class="active">작성자</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s12">
+							<textarea id="dContent" name="content" class="materialize-textarea" class="validate">{{board.content}}</textarea>
+							<label for="content" class="active">내용</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col s12 right">
+				  			<a id="boardUpdate" href="#"><i class="material-icons small">present_to_all</i></a>
+				 			<a id="boardDelete" href="#"><i class="material-icons small">delete</i></a>
+				  			<a id="boardRecoomend" href="#"><i class="material-icons small">thumb_up_down</i></a>
+						</div>
+		    		</div>
+					<div class="row">
+						{{#comments}}
+						<div class="commentAlrea" id="comment{{comment_no}}">
+						<div class="col s10">
+							<span id="s_{{comment_no}}" name="comment">{{content}}</span>
+						</div>
+						<div class="col s2">
+							<a id="commentDelete" href="#"><i class="material-icons small" data-cno="{{comment_no}}">delete</i></a>
+						</div>
+						</div>
+						{{/comments}}
+					</div>
+				</form>
+			</div>
+			<div class="row">
+				<div class="input-field col s10">
+					<input id="dComment" name="comment" type="text">
+					<label for="dComment" class="active">댓글내용</label>
+				</div>
+				<div class="input-field col s2"> 
+					<a id="boardComment" href="#"><i class="material-icons small">add</i></a>
+					</div>
+				</div>
+			</div>
+			</script>
+		</div>
+		<div class="boardlist">
+			<script id="listtemplate" type="x-tmpl-mustache">
+			<div class="row">
+				<div class="input-field col s12">
+			      <table class="striped">
+			        <thead>
+			          <tr>
+			              <th>번호</th>
+			              <th>제목</th>
+			              <th>작성일자</th>
+			              <th>작성자</th>
+			          </tr>
+			        </thead>
+			        <tbody>
+			          	{{#showData}} 
+			          	<tr>
+			            <td>{{no}}</td>
+			            <td><a id="detail{{no}}"
+								href="/14_board/board/{{no}}/detail.do"
+								class="collection-item">{{title}}</a></td>
+			            <td>{{reg_date}}</td>
+			            <td>{{writer}}</td>
+			          	</tr>
+			            {{/showData}}
+			        </tbody>
+			      </table>	
+			      </div>
+			</div>		
+			</script>
+		</div>
+		<a class="waves-effect waves-light right" href="#boardWrite" id="writeModal"><i class="material-icons small">note_add</i></a>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
 	<script src="/14_board/jsfk/waitme/waitMe.js"></script>
 	<script src="/14_board/jsfk/mustache/mustache.min.js"></script>
-	<script src="/14_board/js/board.js"></script>	
+	<script src="/14_board/js/event.js"></script>
+	<script src="/14_board/js/board.js"></script>
 </body>
 </html>

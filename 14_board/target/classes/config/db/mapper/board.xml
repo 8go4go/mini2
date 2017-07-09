@@ -13,6 +13,7 @@
 		SELECT 
 			* 
 		FROM TB_BOARD
+		ORDER BY NO DESC
 		LIMIT #{limit} OFFSET #{start}
 	</select>
 	
@@ -46,7 +47,8 @@
 			title = #{title},
 			content = #{content}
 		WHERE 
-			no = #{no}	
+			no = #{no} and
+			writer = #{writer}	
 	</update>
 	
 	<delete id="deleteBoard" parameterType="TB_BoardVO">
@@ -56,10 +58,18 @@
 			writer = #{writer}
 	</delete>
 	
+	<select id="selectRecommend" resultType="int" parameterType="TB_BoardRecommendVO">
+		SELECT COUNT(*) AS COUNT FROM TB_RECOMMEND 
+		WHERE
+			no = #{no} and 
+			id = #{id} 	
+	</select>
+	
 	<insert id="insertRecommend" parameterType="TB_BoardRecommendVO">
 		INSERT INTO TB_RECOMMEND
 		(no, id) VALUE (#{no}, #{id}) 
 	</insert>
+	
 	
 	<delete id="deleteRecommend" parameterType="TB_BoardRecommendVO">
 		DELETE FROM TB_RECOMMEND

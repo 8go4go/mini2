@@ -1,4 +1,17 @@
 (function() {
+	var notification = {
+		msg : `<div class="row">
+		        <div class="col s12 m6">
+		          <div class="card blue-grey darken-1">
+		            <div class="card-content white-text">
+		              <span class="card-title">로그인 완료</span>
+		              <p>곧 게시판으로 이동합니다.</p>
+		            </div>		     
+		          </div>
+		        </div>
+		      </div>`
+	};
+	
 	var loginModular = {
 		init : function() {
 			this.cacheDom();
@@ -52,8 +65,7 @@
 					var result = JSON.parse(data);
 					if(result.id) { 
 						shVal.hide();
-						resultVal.attr('style', 'background-color:blue;color:white;');
-						resultVal.html(result.name + "님 반갑습니다. <br> 곧 게시판으로 이동합니다.");
+						resultVal.html(notification.msg);
 						setInterval(function(){
 							window.location.href = '/14_board/board/board.do';
 						}, 3000);

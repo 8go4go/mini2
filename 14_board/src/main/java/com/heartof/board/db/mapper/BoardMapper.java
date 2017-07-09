@@ -24,6 +24,8 @@ public interface BoardMapper {
 	
 	public int deleteBoard(TB_BoardVO vo);
 	
+	public int selectRecommend(TB_BoardRecommendVO vo);
+	
 	public int insertRecommend(TB_BoardRecommendVO vo);
 	
 	public int deleteRecommend(TB_BoardRecommendVO vo);

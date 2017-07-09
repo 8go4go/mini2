@@ -50,4 +50,10 @@ public class TB_BoardVO {
 	public void setReg_date(Date reg_date) {
 		this.reg_date = reg_date;
 	}
+
+	@Override
+	public String toString() {
+		return "TB_BoardVO [no=" + no + ", title=" + title + ", writer=" + writer + ", content=" + content
+				+ ", reg_date=" + reg_date + "]";
+	}
 }

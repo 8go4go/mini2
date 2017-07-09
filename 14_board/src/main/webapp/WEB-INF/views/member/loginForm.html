@@ -3,64 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <title>Board</title>
-<style type="text/css">
-	.container {
-		width:1000px;
-		height:700px;
-	}
-	
-	.wrapper {
-		width : 100%;
-		background-color="gray";
-		display:flex;
-	}
-	
-	.inputField {
-		flex-direction: row;
-		align-items: center;
-		margin : 5px;
-	}
-	
-	.inputField input{
-		bacground: blue;
-		border : 1px solid blue;
-		border-radius : 5px;
-	}
-	
-	.inputField button{
-		background-color : red;
-		border : 1px solid blue;
-		border-radius : 5px;
-		box-shadow: 10px 10px 5px #888888;
-	}
-	
-	.result {
-		width : 100%;
-		background-color="gray";
-		display:flex;
-	}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
 <link rel="stylesheet" href="/14_board/jsfk/waitme/waitMe.css">
 </head>
 <body>
 	<div class="container">
-		<div class="wrapper">
-			<div class="inputField">
-				<input type="text" name="id" id="id">
-				<label for="id">ID</label>
-			</div>
-			<div class="inputField">
-				<input type="password" name="pass" id="pass">
-				<label for="pass">PASS</label>
-			</div>
-			<div class="loginBtn">
-				<button>로그인</button>
+		<div class="row">
+			<div class="col l12 s12 valign-wrapper ">
+				<h2>로그인</h2>
 			</div>
 		</div>
-		<div class="result"></div>
+		<div class="row">
+			<div class="col l12 s12 valign-wrapper ">
+				<div class="wrapper center-align">
+					<div class="input-field left-align">
+						<input type="text" name="id" id="id" class="validate"> <label for="id">ID</label>
+					</div>
+					<div class="input-field left-align">
+						<input type="password" name="pass" id="pass" class="validate"> <label
+							for="pass">PASS</label>
+					</div>
+					<div class="loginBtn left-align">
+						<button class="waves-effect waves-light btn">로그인</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="result left-align"></div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="/14_board/jsfk/waitme/waitMe.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
 	<script src="/14_board/js/login.js"></script>
 </body>
 </html>
