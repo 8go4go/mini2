@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.heartof.board.db.mapper.BoardMapper;
 import com.heartof.board.vo.PageVO;
+import com.heartof.board.vo.TB_BoardCommentVO;
 import com.heartof.board.vo.TB_BoardFileVO;
 import com.heartof.board.vo.TB_BoardRecommendVO;
 import com.heartof.board.vo.TB_BoardVO;
@@ -74,5 +75,15 @@ public class BoardServiceImpl implements BoardService {
 			else resultMap.put("I", "0");
 		}
 		return resultMap;
+	}
+	
+	@Override
+	public int deleteComment(TB_BoardCommentVO vo) throws Exception {
+		return boardMapper.deleteComment(vo);
+	}
+	
+	@Override
+	public int insertComment(TB_BoardCommentVO vo) throws Exception {
+		return boardMapper.insertComment(vo);
 	}
 }

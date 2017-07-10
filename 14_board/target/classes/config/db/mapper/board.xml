@@ -84,6 +84,7 @@
 		FROM TB_BOARD_COMMENT
 		WHERE
 			no = #{no}
+		ORDER BY comment_no desc;
 	</select>
 	
 	<delete id="deleteAllComment" parameterType="int" >
@@ -97,12 +98,14 @@
 		DELETE FROM 
 		TB_BOARD_COMMENT
 		WHERE
-			no = #{no} and 
 			comment_no = #{comment_no} and
 			user_id = #{user_id}
 	</delete>
 	
 	<insert id="insertComment" parameterType="TB_BoardCommentVO">
+		<selectKey resultType="int" keyProperty="comment_no" order="AFTER">
+	        SELECT LAST_INSERT_ID()
+	    </selectKey>
 		INSERT INTO TB_BOARD_COMMENT
 			(no, content, user_id, reg_date) 
 		VALUE 

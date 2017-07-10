@@ -5,7 +5,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
@@ -24,6 +26,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.heartof.board.service.BoardService;
 import com.heartof.board.vo.PageVO;
+import com.heartof.board.vo.TB_BoardCommentVO;
 import com.heartof.board.vo.TB_BoardFileVO;
 import com.heartof.board.vo.TB_BoardVO;
 import com.heartof.board.vo.TB_UserVO;
@@ -64,6 +67,7 @@ public class BoardController {
 	
 	@RequestMapping("/update.do")
 	@ResponseBody
+	@Transactional(rollbackFor=Exception.class)
 	public Object updateProcess(TB_BoardVO vo, HttpServletRequest req) throws Exception {
 		TB_UserVO user = (TB_UserVO)req.getSession().getAttribute("user");
 		vo.setWriter(user.getId());
@@ -79,12 +83,40 @@ public class BoardController {
 		return board.recomend(Integer.parseInt(no), user.getId());
 	}
 	
-	@RequestMapping("/recommend.do")
+	@RequestMapping("/{no}/comment.do")
 	@ResponseBody
 	@Transactional(rollbackFor=Exception.class)
 	public Object addCommentProcess(@PathVariable String no, HttpServletRequest req) throws Exception {
 		TB_UserVO user = (TB_UserVO)req.getSession().getAttribute("user");
-		return board.recomend(Integer.parseInt(no), user.getId());
+		
+		TB_BoardCommentVO vo = new TB_BoardCommentVO();
+		vo.setUser_id(user.getId());
+		vo.setNo(Integer.parseInt(no));
+		vo.setContent(req.getParameter("content"));
+		int result = board.insertComment(vo);
+		
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("comment_no", vo.getComment_no());
+		returnMap.put("user_id", user.getId());
+		returnMap.put("result", result);
+		
+		return returnMap;
+	}
+	
+	@RequestMapping("/{no}/{id}/delcomment.do")
+	@ResponseBody
+	@Transactional(rollbackFor=Exception.class)
+	public Object deleteCommentProcess(@PathVariable String no, @PathVariable String id,
+			HttpServletRequest req) throws Exception {
+		TB_UserVO user = (TB_UserVO)req.getSession().getAttribute("user");
+		TB_BoardCommentVO vo = new TB_BoardCommentVO();
+		vo.setComment_no(Integer.parseInt(no));
+		 
+		if(!id.equals(user.getId())) return 1000;
+		
+		vo.setUser_id(user.getId());
+		int returnVal = board.deleteComment(vo);
+		return returnVal;
 	}
 	
 	@RequestMapping("/{no}/{id}/delete.do")

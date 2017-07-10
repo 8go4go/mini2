@@ -103,14 +103,14 @@
 				  			<a id="boardRecoomend" href="#"><i class="material-icons small">thumb_up_down</i></a>
 						</div>
 		    		</div>
-					<div class="row">
+					<div class="row commentAlrea">
 						{{#comments}}
-						<div class="commentAlrea" id="comment{{comment_no}}">
+						<div id="comment{{comment_no}}">
 						<div class="col s10">
 							<span id="s_{{comment_no}}" name="comment">{{content}}</span>
 						</div>
 						<div class="col s2">
-							<a id="commentDelete" href="#"><i class="material-icons small" data-cno="{{comment_no}}">delete</i></a>
+							<a id="commentDelete" href="#"><i class="material-icons small" data-uid="{{user_id}}" data-cno="{{comment_no}}" >delete</i></a>
 						</div>
 						</div>
 						{{/comments}}
@@ -123,7 +123,7 @@
 					<label for="dComment" class="active">댓글내용</label>
 				</div>
 				<div class="input-field col s2"> 
-					<a id="boardComment" href="#"><i class="material-icons small">add</i></a>
+					<a id="boardComment" href="#"><i class="material-icons small" data-no="{{board.no}}">add</i></a>
 					</div>
 				</div>
 			</div>

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.heartof.board.vo.PageVO;
+import com.heartof.board.vo.TB_BoardCommentVO;
 import com.heartof.board.vo.TB_BoardFileVO;
 import com.heartof.board.vo.TB_BoardVO;
 
@@ -21,4 +22,8 @@ public interface BoardService {
 	public int delete(TB_BoardVO vo) throws Exception;
 
 	public Map<String, String> recomend(int no, String id) throws Exception;
+
+	public int deleteComment(TB_BoardCommentVO vo) throws Exception;
+
+	public int insertComment(TB_BoardCommentVO vo) throws Exception;
 }

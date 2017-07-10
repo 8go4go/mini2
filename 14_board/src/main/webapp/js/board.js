@@ -35,6 +35,7 @@
 			events.on("CLEAR_DTEMPLATE", this.doClearDetail);
 			events.on("CLEAR_WRITEFROM", this.doClearWriteForm);
 			events.on("RECOMMEND_STATUS", this.doRecommandStatus);
+			events.on("DEL_COMMENT", this.doDelCommentEl);
 			
 			events.emit("REFRESH", {limit:100, start:0});
 		}, 
@@ -100,11 +101,67 @@
 		
 		doDeleteComment : function(event) {
 			var aEl = event.target;
-			console.log(aEl);
+			var deleteCno = $(aEl).data('cno');
+			var owner = $(aEl).data('uid');
+			
+			$.get(urlList.contextPath + deleteCno +"/" + owner + "/" + urlList.delcomment).
+			done(function(data) {
+				if(data == 0) boardModular.doResult('경고', '삭제오류 입니다. 다시한번 시도해주세요');
+				else {
+					if(data === '1000')
+						boardModular.doResult('경고', '글쓴 본인이 아닌 경우 삭제할수 없습니다. 감사합니다.');
+					else {
+						boardModular.doResult('완료', '삭제 완료 입니다. 감사합니다.');
+						events.emit("DEL_COMMENT", deleteCno); 
+					}
+				}
+			}).fail(function(data) {
+				boardModular.doResult('경고', '삭제오류 입니다. 다시한번 시도해주세요');
+			});
+		},
+		
+		doDelCommentEl : function(deleteCno) {
+			$('#comment' + deleteCno).remove();
 		},
 		
 		doComment : function(event) {
+			var aEl = event.target;
+			var boardNo = $(aEl).data('no');
 			
+			var comment = $('#dComment').val();
+			if(!comment) boardModular.doResult('경고', '빈 댓글을 작성할 수 없습니다. 다시 한번 시도해주세요');
+			
+			$.post(urlList.contextPath + boardNo +"/" + urlList.comment,
+				{
+					content : comment
+				}
+			).done(function(data) {
+				var result = JSON.parse(data);
+				if(result == '0') boardModular.doResult('경고', '댓글오류 입니다. 다시한번 시도해주세요');
+				else {
+					boardModular.doResult('완료', '댓글 작성 완료 입니다. 감사합니다.');
+					boardModular.appendComment(result, comment);
+					$('#dComment').val('');
+				}
+			}).fail(function(data) {
+				boardModular.doResult('경고', '삭제오류 입니다. 다시한번 시도해주세요');
+			});
+		},
+		
+		appendComment : function (result, content) {
+			var comment_no = result.comment_no;
+			var user_id = result.user_id;
+			var insertComment = 
+				`<div id="comment`+comment_no+`">
+				 <div class="col s10">
+					<span id="s_`+comment_no+`" name="comment">`+content+`</span>
+				</div>
+				<div class="col s2">
+					<a id="commentDelete" href="#"><i class="material-icons small" data-uid="`+user_id+`" data-cno="`+comment_no+`" >delete</i></a>
+				</div>
+				</div>`;
+			
+			$('.commentAlrea').prepend(insertComment);
 		},
 		
 		doDetail : function(event) {
